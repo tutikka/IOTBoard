@@ -67,7 +67,7 @@ http://localhost:9090/api/v1/measurement
 
 ### Authentication
 
-If the server requires Basic Access Authentication, include the following HTTP header in your request.
+If the server requires **Basic Access Authentication**, include the following HTTP header in your request.
 
 Syntax:
 
@@ -89,7 +89,7 @@ Syntax:
 
 ```
 Content-Type: application/json
-Content-Length: [LENGTH OR REQUEST BODY]
+Content-Length: [LENGTH OF REQUEST BODY]
 ```
 
 Example:
@@ -108,6 +108,7 @@ Syntax:
        {
          "sensor": "[SENSOR_ID]",
          "timestamp": [MILLISECONDS FROM EPOCH],
+         "history": [NUMBER OF ITEMS ON X-AXIS],
          "values": [
             {
                 "name": "[MEASUREMENT NAME]",
@@ -132,6 +133,7 @@ Example:
        {
          "sensor": "#001",
          "timestamp": "1544556043832",
+         "history": 10,
          "values": [
             {
                 "name": "Temperature",
@@ -146,6 +148,7 @@ Example:
        {
          "sensor": "#002",
          "timestamp": "1544556043832",
+         "history": 10,
          "values": [
             {
                 "name": "Temperature",
