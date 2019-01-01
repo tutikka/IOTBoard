@@ -46,3 +46,8 @@ TODO
 ## API Documentation
 
 TODO
+
+## Credits
+
+- Chart visualizations: https://www.highcharts.com
+- Font: https://fonts.google.com/specimen/Unica+One
