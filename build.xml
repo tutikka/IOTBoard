@@ -1,0 +1,66 @@
+<project name="IOTBoard" default="dist" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+    <description>
+        Build file for IOTBoard
+    </description>
+
+    <property name="src" location="src"/>
+    <property name="build" location="build"/>
+    <property name="dist"  location="dist"/>
+
+    <path id="maven-ant-tasks.classpath" path="lib/maven-ant-tasks-2.1.3.jar"/>
+    <typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant" classpathref="maven-ant-tasks.classpath"/>
+
+    <condition property="maven.local.repo" else="${user.home}/.m2/repository">
+        <isset property="maven.local.repo"/>
+    </condition>
+
+    <target name="init">
+        <mkdir dir="${build}"/>
+        <mkdir dir="${build}/lib"/>
+    </target>
+
+    <target name="maven" depends="init">
+        <artifact:dependencies filesetId="deps.fileset" useScope="runtime">
+            <pom file="pom.xml"/>
+            <localRepository path="${maven.local.repo}"/>
+        </artifact:dependencies>
+        <copy todir="${build}/lib">
+            <fileset refid="deps.fileset"/>
+            <mapper type="flatten"/>
+        </copy>
+    </target>
+
+    <target name="compile" depends="maven">
+        <javac target="1.8" source="1.8" includeantruntime="false" srcdir="${src}" destdir="${build}">
+            <classpath>
+                <pathelement path="${classpath}"/>
+                <fileset dir="${build}/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="dist" depends="compile">
+        <mkdir dir="${dist}/lib"/>
+        <jar jarfile="${dist}/iotboard.jar" basedir="${build}"/>
+        <copy todir="${dist}/lib" >
+            <fileset dir="${build}/lib" includes="**"/>
+        </copy>
+        <mkdir dir="${dist}/webroot"/>
+        <copy todir="${dist}/webroot" >
+            <fileset dir="webroot" includes="**"/>
+        </copy>
+        <mkdir dir="${dist}/etc"/>
+        <copy todir="${dist}/etc" >
+            <fileset dir="etc" includes="*.properties"/>
+        </copy>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+
+</project>

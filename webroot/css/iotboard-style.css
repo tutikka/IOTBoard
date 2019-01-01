@@ -1,0 +1,15 @@
+.footer-bottom-right {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+    font-family: "Unica One";
+    color: #c0c0c0;
+}
+.chart-container {
+    margin: 8px;
+    width: 640px;
+    height: 320px;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    box-shadow: 4px 4px rgba(0, 0, 0, 0.25);
+}

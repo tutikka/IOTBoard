@@ -1,0 +1,42 @@
+IOT Board API Documentation
+---------------------------
+
+TODO
+
+1. Request
+
+   1.1 URL
+
+   http(s)://[HOST]:[PORT]/api/measurement
+
+   1.2 Authentication
+
+   TODO
+
+   1.3 Content
+
+   [
+       {
+         "sensor": "#001",
+         "timestamp": "1544556043832",
+         "values": [
+            {
+                "name": "Temperature",
+                "value": 25
+            },
+            {
+                "name": "Humidity",
+                "value": 75.0
+            }
+         ]
+       },
+       {
+            ...
+       }
+   ]
+
+2. Response
+
+   2.1 Status
+
+   HTTP 200 OK
