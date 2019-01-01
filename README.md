@@ -1,7 +1,15 @@
 # IOTBoard
-Web-based board to display real-time sensor data
+**IOTBoard** is an application designed to be able to read measurements from various sensors and visualize the data in real-time. All incoming data is assumed to be time-based, in practice meaning:
+
+- A sensor identifier (for example "Basement Sensor")
+- Time of measurement
+- Name/value pairs representing the measurements (for example "Temperature", "Humidity")
+
+The UI display a panel for each sensor, with different line charts for each measurement. The panels can be freely arranged on the board, and the charts are updated as data arrives (no need to refresh).
 
 ![ScreenShot](/etc/screenshot-1.png)
+
+Originally the application was used on a Raspberry Pi to display temperature and humidity readings from wireless sensors around the household and display the information in one central place. The design was extended to easily support pretty much any kind of time-based measurement, and the application can be run on any platform supporting Java (Raspberry Pi, Desktop, Server, Cloud).
 
 ## Features
 
@@ -47,7 +55,36 @@ $ java -cp .:iotboard.jar:lib/* com.tt.iotboard.client.Client
 
 ## Configuration options
 
+Server:
+
+```
+#
+# The port number to listen on (API & UI).
+#
+iotboard.port=9090
+
+#
+# The authentication scheme (API only).
+#
+# com.tt.iotboard.server.authentication.NoAuthentication          : No authentication required
+# com.tt.iotboard.server.authentication.BasicAccessAuthentication : The server requires Basic Access Authentication
+#
+iotboard.authentication=com.tt.iotboard.server.authentication.BasicAccessAuthentication
+
+#
+# Authentication options.
+#
+# No Authentication           : Not needed
+# Basic Access Authentication : Specify username and password using "username=[USERNAME],password=[PASSWORD]"
+#
+iotboard.authentication.options=username=user,password=pass
+```
+
+Client:
+
+```
 TODO
+```
 
 ## API Documentation
 
