@@ -87,7 +87,7 @@ Client:
 You can use the builder pattern to configure the Java reference client and send measurements:
 
 ```java
-Client client = new Builder()
+Client client = new Client.Builder()
     .host("localhost")
     .port(9090)
     .connectTimeout(10000)
@@ -104,7 +104,9 @@ client.send(measurement);
 
 ## API Documentation
 
-### Request URL
+### New Measurement
+
+#### Request URL
 
 Syntax:
 
@@ -118,7 +120,11 @@ Example:
 http://localhost:9090/api/v1/measurement
 ```
 
-### Authentication
+#### Request Method
+
+`HTTP POST`
+
+#### Authentication
 
 If the server requires **Basic Access Authentication**, include the following HTTP header in your request.
 
@@ -130,8 +136,8 @@ Authorization: Basic BASE64_ENCODE([USERNAME]:[PASSWORD])
 
 Example:
 
-- Username = *user*
-- Password = *pass*
+- Username = `user`
+- Password = `pass`
 
 ```
 Authorization: Basic dXNlcjpwYXNz
@@ -149,18 +155,18 @@ Authorization: IOTBoard BASE64_ENCODE(HMAC_SHA256([SECRET], [HTTP METHOD]\n[CONT
 
 Example:
 
-- Secret = *abcd*
-- HTTP method = *POST*
-- Content type = *application/json*
-- Date = *Wed, 02 Jan 2019 10:21:04 EET*
-- URI = */api/v1/measurement*
-- Content MD5 = *feac48bbe0beb7b1a54d07ae400f7aa3*
+- Secret = `abcd`
+- HTTP method = `POST`
+- Content type = `application/json`
+- Date = `Wed, 02 Jan 2019 10:21:04 EET`
+- URI = `/api/v1/measurement`
+- Content MD5 = `feac48bbe0beb7b1a54d07ae400f7aa3`
 
 ```
 Authorization: IOTBoard MjFhZjU3NmRlM2Q4Zjg3ZjhlMjk4ZmM3OWE1ODc2N2U2MzM2OThhYjQ1ZTVhMjkxZWE4NzUxZTM5ZjhhNDhlZg==
 ```
 
-### Required Headers
+#### Required Headers
 
 Syntax:
 
@@ -171,12 +177,14 @@ Content-Length: [LENGTH OF REQUEST BODY]
 
 Example:
 
+- Content length = `1024`
+
 ```
 Content-Type: application/json
 Content-Length: 1024
 ```
 
-### Request Body
+#### Request Body
 
 Syntax:
 
@@ -239,6 +247,13 @@ Example:
        } 
    ]
 ```
+
+#### Response
+
+- `HTTP OK` if the request succeeded
+- `HTTP FORBIDDEN` if the server required authentication and access was denied
+- `HTTP NOT FOUND` if the requested resource was not found (wrong URL)
+- `HTTP INTERNAL SERVER ERROR` if an error occurred while processing a valid request
 
 ## Credits
 
