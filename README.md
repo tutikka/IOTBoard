@@ -57,7 +57,7 @@ $ java -cp .:iotboard.jar:lib/* com.tt.iotboard.client.Client
 
 Server:
 
-```
+```properties
 #
 # The port number to listen on (API & UI).
 #
@@ -84,8 +84,22 @@ iotboard.authentication.options=secret=abcd
 
 Client:
 
-```
-TODO
+You can use the builder pattern to configure the Java reference client and send measurements:
+
+```java
+Client client = new Builder()
+    .host("localhost")
+    .port(9090)
+    .connectTimeout(10000)
+    .readTimeout(10000)
+    .authentication(new TokenAuthentication("abcd"))
+    .build();
+
+Measurement measurement = new Measurement("Sensor #0001", System.currentTimeMillis(), 10);
+measurement.getValues().add(new Value("Temperature", 25.0));
+measurement.getValues().add(new Value("Humidity", 75.0));
+
+client.send(measurement);
 ```
 
 ## API Documentation

@@ -201,7 +201,13 @@ public class Client {
 
         final Random random = new Random(System.currentTimeMillis());
 
-        final Client client = new Builder().host("localhost").port(9090).authentication(new TokenAuthentication("abcd")).build();
+        final Client client = new Builder()
+                .host("localhost")
+                .port(9090)
+                .connectTimeout(10000)
+                .readTimeout(10000)
+                .authentication(new TokenAuthentication("abcd"))
+                .build();
 
         Thread sensor1 = new Thread() {
             @Override
