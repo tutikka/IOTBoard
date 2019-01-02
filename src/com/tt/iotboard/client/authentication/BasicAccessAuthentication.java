@@ -1,5 +1,6 @@
 package com.tt.iotboard.client.authentication;
 
+import java.net.HttpURLConnection;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class BasicAccessAuthentication extends Authentication {
     }
 
     @Override
-    public Map<String, String> getRequestHeaders() {
+    public Map<String, String> getRequestHeaders(HttpURLConnection connection) {
         Map<String, String> map = new HashMap<>();
         try {
             map.put("Authorization", "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes("UTF-8")));

@@ -71,18 +71,20 @@ public class ServerVerticle extends AbstractVerticle {
 
         HttpServerRequest request = routingContext.request();
 
-        Authentication authentication = Config.getInstance().getAuthentication();
-        if (!authentication.validateRequestHeaders(request)) {
-            HttpServerResponse response = routingContext.response();
-            response.setStatusCode(403);
-            response.end();
-            return;
-        }
-
         request.bodyHandler(bodyHandler -> {
+
+            Authentication authentication = Config.getInstance().getAuthentication();
+            if (!authentication.validateRequestHeaders(request, bodyHandler.toString())) {
+                HttpServerResponse response = routingContext.response();
+                response.setStatusCode(403);
+                response.end();
+                return;
+            }
+
             L.info("body: " + bodyHandler.toString());
             JsonArray jsonArray = bodyHandler.toJsonArray();
             eventBus.publish("event.to.client", jsonArray);
+
         });
 
         HttpServerResponse response = routingContext.response();

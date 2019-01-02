@@ -9,7 +9,8 @@ public class NoAuthentication extends Authentication {
     private static final Logger L = LoggerFactory.getLogger(NoAuthentication.class);
 
     @Override
-    public boolean validateRequestHeaders(HttpServerRequest request) {
+    public boolean validateRequestHeaders(HttpServerRequest request, String body) {
+        L.trace("validateRequestHeaders");
         return (true);
     }
 

@@ -34,6 +34,18 @@ public abstract class Authentication {
         }
     }
 
-    public abstract boolean validateRequestHeaders(HttpServerRequest request);
+    public String mask(String s) {
+        L.trace("mask");
+        if (s == null) {
+            return (null);
+        }
+        StringBuilder masked = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            masked.append("*");
+        }
+        return (masked.toString());
+    }
+
+    public abstract boolean validateRequestHeaders(HttpServerRequest request, String body);
 
 }

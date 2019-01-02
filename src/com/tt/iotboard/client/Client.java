@@ -1,13 +1,17 @@
 package com.tt.iotboard.client;
 
 import com.tt.iotboard.client.authentication.Authentication;
-import com.tt.iotboard.client.authentication.BasicAccessAuthentication;
 import com.tt.iotboard.client.authentication.NoAuthentication;
+import com.tt.iotboard.client.authentication.TokenAuthentication;
+import com.tt.iotboard.common.Utilities;
 import io.vertx.core.json.Json;
 
 import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -119,7 +123,6 @@ public class Client {
             return (this);
         }
 
-
         /**
          * Set the client authentication
          *
@@ -176,10 +179,13 @@ public class Client {
         connection.setConnectTimeout(connectTimeout);
         connection.setReadTimeout(readTimeout);
         String json = Json.encode(measurements);
+        connection.addRequestProperty("Date", new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").format(new Date())); // Example: Wed, 02 Jan 2019 07:32:49 GMT
         connection.addRequestProperty("Content-Type", "application/json");
         connection.addRequestProperty("Content-Length", "" + json.length());
-        for (String name : authentication.getRequestHeaders().keySet()) {
-            String value = authentication.getRequestHeaders().get(name);
+        connection.addRequestProperty("Content-MD5", Utilities.MD5(json));
+        Map<String, String> headers = authentication.getRequestHeaders(connection);
+        for (String name : headers.keySet()) {
+            String value = headers.get(name);
             connection.addRequestProperty(name, value);
         }
         connection.getOutputStream().write(json.getBytes("UTF-8"));
@@ -195,7 +201,7 @@ public class Client {
 
         final Random random = new Random(System.currentTimeMillis());
 
-        final Client client = new Builder().host("localhost").port(9090).authentication(new BasicAccessAuthentication("user", "pass")).build();
+        final Client client = new Builder().host("localhost").port(9090).authentication(new TokenAuthentication("abcd")).build();
 
         Thread sensor1 = new Thread() {
             @Override

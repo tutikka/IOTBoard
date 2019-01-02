@@ -68,16 +68,18 @@ iotboard.port=9090
 #
 # com.tt.iotboard.server.authentication.NoAuthentication          : No authentication required
 # com.tt.iotboard.server.authentication.BasicAccessAuthentication : The server requires Basic Access Authentication
+# com.tt.iotboard.server.authentication.TokenAuthentication       : The server requires a signed access token
 #
-iotboard.authentication=com.tt.iotboard.server.authentication.BasicAccessAuthentication
+iotboard.authentication=com.tt.iotboard.server.authentication.TokenAuthentication
 
 #
 # Authentication options.
 #
 # No Authentication           : Not needed
 # Basic Access Authentication : Specify username and password using "username=[USERNAME],password=[PASSWORD]"
+# TokenAuthentication         : Specify the shared secret using "secret=[SECRET]"
 #
-iotboard.authentication.options=username=user,password=pass
+iotboard.authentication.options=secret=abcd
 ```
 
 Client:
@@ -112,13 +114,37 @@ Syntax:
 Authorization: Basic BASE64_ENCODE([USERNAME]:[PASSWORD])
 ```
 
-Example (username = *user*, password = *pass*):
+Example:
+
+- Username = *user*
+- Password = *pass*
 
 ```
 Authorization: Basic dXNlcjpwYXNz
 ```
 
 For more information, refer to https://en.wikipedia.org/wiki/Basic_access_authentication.
+
+If the server requires **Token Authentication**, include the following HTTP header in your request.
+
+Syntax:
+
+```
+Authorization: IOTBoard BASE64_ENCODE(HMAC_SHA256([SECRET], [HTTP METHOD]\n[CONTENT_TYPE]\n[DATE]\n[URI]\nMD5[CONTENT]))
+```
+
+Example:
+
+- Secret = *abcd*
+- HTTP method = *POST*
+- Content type = *application/json*
+- Date = *Wed, 02 Jan 2019 10:21:04 EET*
+- URI = */api/v1/measurement*
+- Content MD5 = *feac48bbe0beb7b1a54d07ae400f7aa3*
+
+```
+Authorization: IOTBoard MjFhZjU3NmRlM2Q4Zjg3ZjhlMjk4ZmM3OWE1ODc2N2U2MzM2OThhYjQ1ZTVhMjkxZWE4NzUxZTM5ZjhhNDhlZg==
+```
 
 ### Required Headers
 
